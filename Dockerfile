@@ -30,8 +30,8 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . .
 
-# 3. Bypass strict OS-level platform checks
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+# Bypass strict OS-level platform checks and skip boot scripts during build
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
 
 # Configure Apache document root to point to Laravel's public directory
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public

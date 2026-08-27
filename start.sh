@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# Run migrations automatically
+# 1. Discover packages and cache config (now that env vars are loaded)
+php artisan package:discover --ansi
+php artisan config:cache
+php artisan route:cache
+
+# 2. Run migrations automatically
 php artisan migrate --force
 
-# Start Apache in the foreground
+# 3. Start Apache in the foreground
 apache2-foreground
