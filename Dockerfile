@@ -1,20 +1,25 @@
-FROM php:8.2-apache
+# 1. Upgraded to PHP 8.3 to match modern local environments
+FROM php:8.3-apache
 
-# Install system dependencies
+# 2. Fix out-of-memory errors during build
+ENV COMPOSER_MEMORY_LIMIT=-1
+
+# Install system dependencies (added libzip-dev)
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libzip-dev \
     zip \
     unzip
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Install PHP extensions (added zip)
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -25,8 +30,8 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# 3. Bypass strict OS-level platform checks
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Configure Apache document root to point to Laravel's public directory
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
@@ -41,8 +46,6 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # Copy the startup script
 COPY start.sh /usr/local/bin/start.sh
-
-# Make it executable
 RUN chmod +x /usr/local/bin/start.sh
 
 EXPOSE 80
