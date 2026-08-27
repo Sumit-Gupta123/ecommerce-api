@@ -1,5 +1,5 @@
-# 1. Upgraded to PHP 8.3 to match modern local environments
-FROM php:8.3-apache
+# 1. Upgraded to PHP 8.4 to match modern local environments
+FROM php:8.4-apache
 
 # 2. Fix out-of-memory errors during build
 ENV COMPOSER_MEMORY_LIMIT=-1
