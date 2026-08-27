@@ -39,4 +39,13 @@ RUN a2enmod rewrite
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Copy the startup script
+COPY start.sh /usr/local/bin/start.sh
+
+# Make it executable
+RUN chmod +x /usr/local/bin/start.sh
+
 EXPOSE 80
+
+# Run the script when the container starts
+CMD ["/usr/local/bin/start.sh"]
