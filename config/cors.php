@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://ecommerce-api-wjow.onrender.com'],
+    'allowed_origins' => ['https://ecommerce-client-alpha-mocha.vercel.app'],
 
     'allowed_origins_patterns' => [],
 
