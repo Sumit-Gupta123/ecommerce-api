@@ -5,6 +5,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\IsAdmin;
 
+// Redirect the base URL to the admin panel
+Route::get('/', function () {
+    return redirect()->route('admin.orders');
+});
+
 // Public Login Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
